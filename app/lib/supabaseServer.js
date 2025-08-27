@@ -1,10 +1,10 @@
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export const supabaseServer = () => {
   return createServerClient({
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY, // server-side only
+    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     cookies
   });
 };
