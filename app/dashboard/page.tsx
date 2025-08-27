@@ -1,14 +1,26 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
 import ProductUploadForm from '../components/ProductUploadForm';
-import { redirect } from 'next/navigation';
-import { supabaseServer } from '../lib/supabaseServer';
+import { useRouter } from 'next/navigation';
+import { User } from '@supabase/supabase-js';
 
-export default async function DashboardPage() {
-  const supabase = supabaseServer();
-  const { data: { session } } = await supabase.auth.getSession();
+export default function DashboardPage() {
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
-  if (!session) redirect('/login');
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser(session.user);
+      } else {
+        router.push('/login');
+      }
+    });
+  }, [router]);
 
-  const user = session.user;
+  if (!user) return <p>Loading...</p>;
 
   return (
     <div style={{ maxWidth: 800, margin: 'auto' }}>

@@ -4,17 +4,18 @@ import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function SignupForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
 
-  const handleCaptchaChange = (token) => {
+  // token can be string or null
+  const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!captchaToken) {
@@ -67,10 +68,10 @@ export default function SignupForm() {
         style={{ width: '100%', padding: 8, marginBottom: 10 }}
       />
 
-      {/*<ReCAPTCHA
-        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+      <ReCAPTCHA
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
         onChange={handleCaptchaChange}
-      />*/}
+      />
 
       <button type="submit" disabled={loading} style={{ marginTop: 20 }}>
         {loading ? 'Signing up...' : 'Sign Up'}

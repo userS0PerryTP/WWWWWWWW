@@ -1,15 +1,20 @@
 'use client'
 
 import React, { useState } from 'react';
+import { User } from '@supabase/supabase-js';
 
-export default function ProductUploadForm({ user }) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [images, setImages] = useState([]); // Assume images URLs or base64 strings
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+interface ProductUploadFormProps {
+  user: User;
+}
 
-  const handleSubmit = async (e) => {
+export default function ProductUploadForm({ user }: ProductUploadFormProps) {
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [images, setImages] = useState<File[]>([]);
+  const [message, setMessage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!name || !description) {
@@ -26,7 +31,7 @@ export default function ProductUploadForm({ user }) {
       body: JSON.stringify({
         productName: name,
         productDescription: description,
-        images,
+        images, // handle actual file uploads separately
         sellerId: user.id,
       }),
     });
@@ -44,8 +49,6 @@ export default function ProductUploadForm({ user }) {
 
     setLoading(false);
   };
-
-  // For simplicity, image upload logic omitted here; you'd handle file uploads or URLs.
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: 'auto' }}>

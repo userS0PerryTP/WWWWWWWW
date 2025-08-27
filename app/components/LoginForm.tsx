@@ -7,16 +7,16 @@ import { useRouter } from 'next/navigation';
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [captchaToken, setCaptchaToken] = useState(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const router = useRouter();
 
-  const handleCaptchaChange = (token) => {
+  const handleCaptchaChange = (token: string | null) => {
     setCaptchaToken(token);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!captchaToken) {
